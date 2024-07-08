@@ -1,0 +1,27 @@
+version: '3s'
+
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - ./:/code:ro
+    environment:
+          - DATABASE_URL=postgresql://postgres:test#1270@postgres:5432/dockert
+    ports:
+      - "8000:80"
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=test#1270
+      - POSTGRES_DB=dockert
+volumes:
+  postgres_data:
